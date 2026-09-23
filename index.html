@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>G A Imóveis – Catálogo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #1a3c5e;
+      --primary-light: #2a5080;
+      --accent: #c9a84c;
+      --accent-light: #e8c96d;
+      --bg: #f5f6f8;
+      --white: #ffffff;
+      --gray-100: #f0f2f5;
+      --gray-200: #e2e6ea;
+      --gray-400: #9aa3ad;
+      --gray-600: #5a6474;
+      --gray-800: #2d3748;
+      --text: #1a202c;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.10);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,.16);
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 0 2rem;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: var(--shadow-md);
+    }
+    .header-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px;
+    }
+    .logo { display: flex; align-items: center; gap: .85rem; }
+    .logo img {
+      height: 52px;
+      width: auto;
+      border-radius: 10px;
+      object-fit: contain;
+      background: #fff;
+      padding: 3px;
+    }
+    .logo-text .brand { font-size: 1.15rem; font-weight: 700; letter-spacing: .5px; color: #fff; }
+    .logo-text .tagline { font-size: .7rem; color: var(--accent-light); text-transform: uppercase; letter-spacing: 1px; }
+    .btn-wa-header {
+      background: #25D366; color: #fff; font-weight: 700; font-size: .83rem;
+      padding: .5rem 1.15rem; border-radius: 50px; text-decoration: none;
+      display: flex; align-items: center; gap: .4rem; transition: background .2s;
+      white-space: nowrap;
+    }
+    .btn-wa-header:hover { background: #1ebe5d; }
+
+    /* ── BANNER PRINCIPAL ── */
+    .hero-banner {
+      position: relative;
+      width: 100%;
+      max-height: 480px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary);
+    }
+    .hero-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .hero-banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(26,60,94,.65) 0%, rgba(26,60,94,.1) 60%, transparent 100%);
+      display: flex;
+      align-items: center;
+      padding: 3rem;
+    }
+    .hero-banner-text h1 {
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      text-shadow: 0 2px 8px rgba(0,0,0,.3);
+      margin-bottom: .6rem;
+    }
+    .hero-banner-text h1 span { color: var(--accent); }
+    .hero-banner-text p {
+      font-size: 1rem;
+      color: rgba(255,255,255,.88);
+      text-shadow: 0 1px 4px rgba(0,0,0,.3);
+      max-width: 380px;
+      margin-bottom: 1.4rem;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .stat {
+      text-align: center;
+      background: rgba(255,255,255,.12);
+      backdrop-filter: blur(4px);
+      border-radius: 10px;
+      padding: .6rem 1rem;
+      min-width: 70px;
+    }
+    .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--accent); line-height: 1; }
+    .stat-label { font-size: .68rem; color: rgba(255,255,255,.75); text-transform: uppercase; letter-spacing: 1px; margin-top: .2rem; }
+
+    /* ── FILTROS ── */
+    .filters-bar {
+      background: var(--white); border-bottom: 1px solid var(--gray-200);
+      padding: .85rem 2rem; position: sticky; top: 72px; z-index: 90;
+      box-shadow: var(--shadow-sm);
+    }
+    .filters-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+    }
+    .filters-label { font-size: .8rem; font-weight: 600; color: var(--gray-600); white-space: nowrap; }
+    .filter-btn {
+      background: var(--gray-100); border: 2px solid transparent;
+      color: var(--gray-800); font-family: inherit; font-size: .8rem; font-weight: 500;
+      padding: .35rem .85rem; border-radius: 50px; cursor: pointer; transition: all .2s;
+    }
+    .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .results-count { margin-left: auto; font-size: .8rem; color: var(--gray-600); }
+
+    /* ── GRID ── */
+    .catalog-section { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem; }
+    .catalog-section h2 {
+      font-size: 1.35rem; font-weight: 700; color: var(--primary);
+      margin-bottom: 1.5rem; display: flex; align-items: center; gap: .5rem;
+    }
+    .catalog-section h2::after { content: ''; flex: 1; height: 2px; background: var(--gray-200); border-radius: 1px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white); border-radius: var(--radius); overflow: hidden;
+      box-shadow: var(--shadow-sm); transition: transform .25s, box-shadow .25s;
+      display: flex; flex-direction: column;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+    .gallery { position: relative; height: 220px; overflow: hidden; background: var(--gray-200); }
+    .gallery-slides { display: flex; height: 100%; transition: transform .35s ease; }
+    .gallery-slide { min-width: 100%; height: 100%; }
+    .gallery-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gallery-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,.45); color: #fff; border: none; cursor: pointer;
+      width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center; z-index: 5;
+      transition: background .2s;
+    }
+    .gallery-btn:hover { background: rgba(0,0,0,.7); }
+    .gallery-btn.prev { left: 8px; }
+    .gallery-btn.next { right: 8px; }
+    .gallery-dots { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 5; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.5); cursor: pointer; transition: background .2s; }
+    .dot.active { background: #fff; }
+    .card-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--accent); color: var(--primary);
+      font-size: .7rem; font-weight: 700; padding: .25rem .65rem;
+      border-radius: 50px; text-transform: uppercase; letter-spacing: .5px; z-index: 4;
+    }
+    .card-badge.aluguel { background: var(--primary); color: #fff; }
+
+    .card-body { padding: 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: .55rem; }
+    .card-price { font-size: 1.4rem; font-weight: 800; color: var(--primary); }
+    .card-price span { font-size: .8rem; font-weight: 400; color: var(--gray-600); }
+    .card-title { font-size: .97rem; font-weight: 700; color: var(--gray-800); line-height: 1.3; }
+    .card-features { display: flex; gap: .45rem; flex-wrap: wrap; }
+    .feat {
+      background: var(--gray-100); border-radius: var(--radius-sm);
+      font-size: .76rem; font-weight: 500; color: var(--gray-800);
+      padding: .22rem .55rem; display: flex; align-items: center; gap: .25rem;
+    }
+    .card-footer { padding: 0 1.2rem 1.2rem; }
+    .btn-contato {
+      display: flex; align-items: center; justify-content: center; gap: .45rem;
+      width: 100%; background: #25D366; color: #fff;
+      font-family: inherit; font-size: .88rem; font-weight: 700;
+      padding: .72rem; border-radius: var(--radius-sm); border: none;
+      cursor: pointer; text-decoration: none; transition: background .2s;
+    }
+    .btn-contato:hover { background: #1ebe5d; }
+
+    /* ── RODAPÉ ATENDIMENTO ── */
+    .contact-section {
+      background: linear-gradient(135deg, var(--primary) 0%, #0f2a45 100%);
+      color: #fff;
+      overflow: hidden;
+      position: relative;
+    }
+    .contact-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 3.5rem 2rem 0;
+    }
+    .contact-text { flex: 1; padding-bottom: 3.5rem; }
+    .contact-text h2 {
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 800;
+      margin-bottom: .6rem;
+      line-height: 1.2;
+    }
+    .contact-text h2 span { color: var(--accent); }
+    .contact-text p { color: rgba(255,255,255,.75); margin-bottom: 2rem; font-size: 1rem; line-height: 1.6; }
+    .contact-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-wa-big {
+      background: #25D366; color: #fff; font-weight: 700; font-size: 1rem;
+      padding: .85rem 2rem; border-radius: 50px; text-decoration: none;
+      display: inline-flex; align-items: center; gap: .5rem; transition: background .2s;
+      box-shadow: 0 4px 16px rgba(37,211,102,.35);
+    }
+    .btn-wa-big:hover { background: #1ebe5d; }
+    .contact-atendente {
+      flex-shrink: 0;
+      width: 280px;
+      align-self: flex-end;
+    }
+    .contact-atendente img {
+      width: 100%;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 -8px 24px rgba(0,0,0,.25));
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #07192e;
+      color: rgba(255,255,255,.4);
+      text-align: center;
+      padding: 1.25rem;
+      font-size: .78rem;
+    }
+
+    .empty { grid-column: 1/-1; text-align: center; padding: 4rem 2rem; color: var(--gray-400); font-size: 1.05rem; }
+
+    @media (max-width: 768px) {
+      .hero-banner { max-height: 320px; }
+      .hero-banner-overlay { padding: 1.5rem; }
+      .contact-atendente { display: none; }
+      .contact-inner { padding-bottom: 3rem; }
+      .contact-text { padding-bottom: 0; }
+    }
+    @media (max-width: 600px) {
+      .header-inner { height: 60px; }
+      .logo img { height: 42px; }
+      .catalog-section { padding: 1.5rem 1rem; }
+      .grid { grid-template-columns: 1fr; }
+      .filters-inner { gap: .5rem; }
+      .hero-banner { max-height: 240px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER com LOGO -->
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <img src="logo.jpg" alt="G A Imóveis" />
+      <div class="logo-text">
+        <div class="brand">G A Imóveis</div>
+        <div class="tagline">Seu imóvel ideal</div>
+      </div>
+    </div>
+    <a class="btn-wa-header" href="https://wa.me/message/2R2A4LNEO6W2N1" target="_blank">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+</header>
+
+<!-- BANNER PRINCIPAL -->
+<div class="hero-banner">
+  <img src="banner.jpg" alt="G A Imóveis Banner" />
+  <div class="hero-banner-overlay">
+    <div class="hero-banner-text">
+      <h1>Encontre o imóvel<br/><span>perfeito para você</span></h1>
+      <p>Portfólio exclusivo com qualidade e ótima localização.</p>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">14</div><div class="stat-label">Imóveis</div></div>
+        <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Verificados</div></div>
+        <div class="stat"><div class="stat-num">★ 5.0</div><div class="stat-label">Atendimento</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTROS -->
+<div class="filters-bar">
+  <div class="filters-inner">
+    <span class="filters-label">Filtrar:</span>
+    <button class="filter-btn active" onclick="filtrar(this,'todos')">Todos</button>
+    <button class="filter-btn" onclick="filtrar(this,'venda')">🏷️ Venda</button>
+    <button class="filter-btn" onclick="filtrar(this,'aluguel')">🔑 Aluguel</button>
+    <span class="results-count" id="results-count">14 imóveis encontrados</span>
+  </div>
+</div>
+
+<!-- CATÁLOGO -->
+<section class="catalog-section">
+  <h2>🏢 Imóveis Disponíveis</h2>
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- RODAPÉ ATENDIMENTO -->
+<section class="contact-section">
+  <div class="contact-inner">
+    <div class="contact-text">
+      <h2>Fale com nossa<br/><span>equipe agora!</span></h2>
+      <p>Tire suas dúvidas, agende uma visita ou solicite mais informações.<br/>Atendimento rápido e personalizado para você.</p>
+      <div class="contact-actions">
+        <a class="btn-wa-big" href="https://wa.me/message/2R2A4LNEO6W2N1" target="_blank">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chamar no WhatsApp
+        </a>
+      </div>
+    </div>
+    <div class="contact-atendente">
+      <img src="atendente.png" alt="Atendente G A Imóveis" />
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 G A Imóveis · Todos os direitos reservados · Atualizado em setembro/2026</footer>
+
+<script>
+const WA = "https://wa.me/message/2R2A4LNEO6W2N1";
+
+const imoveis = [
+  { tipo:"aluguel", titulo:"Biarritiz",                       preco:"R$ 3.300", por:"/mês",  fotos:["fotos/biarritiz_aluguel/foto1.jpg","fotos/biarritiz_aluguel/foto2.jpg","fotos/biarritiz_aluguel/foto3.jpg","fotos/biarritiz_aluguel/foto4.jpg","fotos/biarritiz_aluguel/foto5.jpg"] },
+  { tipo:"venda",  titulo:"Biarritiz",                        preco:"R$ 400.000", por:"",   fotos:["fotos/biarritiz_venda/foto1.jpg","fotos/biarritiz_venda/foto2.jpg","fotos/biarritiz_venda/foto3.jpg","fotos/biarritiz_venda/foto4.jpg","fotos/biarritiz_venda/foto5.jpg"] },
+  { tipo:"aluguel", titulo:"Bonavita Prime",                  preco:"R$ 3.000", por:"/mês",  fotos:["fotos/bonavita_prime/foto1.jpg","fotos/bonavita_prime/foto2.jpg","fotos/bonavita_prime/foto3.jpg","fotos/bonavita_prime/foto4.jpg","fotos/bonavita_prime/foto5.jpg"] },
+  { tipo:"aluguel", titulo:"Centro Comercial Arraçagy",       preco:"R$ 2.500", por:"/mês",  fotos:["fotos/centro_comercial/foto1.jpg","fotos/centro_comercial/foto2.jpg","fotos/centro_comercial/foto3.jpg","fotos/centro_comercial/foto4.jpg","fotos/centro_comercial/foto5.jpg"] },
+  { tipo:"aluguel", titulo:"Edifício Munin",                  preco:"R$ 2.300", por:"/mês",  fotos:["fotos/munin/foto1.jpg","fotos/munin/foto2.jpg","fotos/munin/foto3.jpg","fotos/munin/foto4.jpg","fotos/munin/foto5.jpg"] },
+  { tipo:"aluguel", titulo:"Fit Life",                        preco:"R$ 3.500", por:"/mês",  fotos:["fotos/fit_life/foto1.jpg","fotos/fit_life/foto2.jpg","fotos/fit_life/foto3.jpg","fotos/fit_life/foto4.jpg","fotos/fit_life/foto5.jpg"] },
+  { tipo:"venda",  titulo:"Flat Bellagio",                    preco:"R$ 250.000", por:"",   fotos:["fotos/flat_bellagio/foto1.jpg","fotos/flat_bellagio/foto2.jpg","fotos/flat_bellagio/foto3.jpg","fotos/flat_bellagio/foto4.jpg"] },
+  { tipo:"venda",  titulo:"Studio Design Holandeses",         preco:"R$ 475.000", por:"",   fotos:["fotos/studio_design/foto1.jpg","fotos/studio_design/foto2.jpg","fotos/studio_design/foto3.jpg","fotos/studio_design/foto4.jpg","fotos/studio_design/foto5.jpg"] },
+  { tipo:"aluguel", titulo:"Ilha de Havana",                  preco:"R$ 2.600", por:"/mês",  fotos:["fotos/ilha_havana/foto1.jpg","fotos/ilha_havana/foto2.jpg","fotos/ilha_havana/foto3.jpg","fotos/ilha_havana/foto4.jpg","fotos/ilha_havana/foto5.jpg"] },
+  { tipo:"aluguel", titulo:"La Quintas Studios",              preco:"R$ 3.000", por:"/mês",  fotos:["fotos/la_quintas/foto1.jpg","fotos/la_quintas/foto2.jpg","fotos/la_quintas/foto3.jpg","fotos/la_quintas/foto4.jpg","fotos/la_quintas/foto5.jpg"] },
+  { tipo:"venda",  titulo:"Number One",                       preco:"R$ 400.000", por:"",   fotos:["fotos/number_one_400/foto1.jpg","fotos/number_one_400/foto2.jpg","fotos/number_one_400/foto3.jpg","fotos/number_one_400/foto4.jpg","fotos/number_one_400/foto5.jpg"] },
+  { tipo:"venda",  titulo:"Number One – Alto Padrão",         preco:"R$ 750.000", por:"",   fotos:["fotos/number_one_750/foto1.jpg","fotos/number_one_750/foto2.jpg","fotos/number_one_750/foto3.jpg","fotos/number_one_750/foto4.jpg","fotos/number_one_750/foto5.jpg"] },
+  { tipo:"aluguel", titulo:"Porto Madeiro",                   preco:"R$ 8.500", por:"/mês",  fotos:["fotos/porto_madeiro/foto1.jpg","fotos/porto_madeiro/foto2.jpg","fotos/porto_madeiro/foto3.jpg","fotos/porto_madeiro/foto4.jpg","fotos/porto_madeiro/foto5.jpg"] },
+  { tipo:"aluguel", titulo:"Solar Ilha III",                  preco:"R$ 2.200", por:"/mês",  fotos:["fotos/solar_ilha/foto1.jpg","fotos/solar_ilha/foto2.jpg","fotos/solar_ilha/foto3.jpg","fotos/solar_ilha/foto4.jpg","fotos/solar_ilha/foto5.jpg"] }
+];
+
+const state = imoveis.map(() => 0);
+
+function move(idx, dir) {
+  const total = imoveis[idx].fotos.length;
+  state[idx] = (state[idx] + dir + total) % total;
+  goTo(idx, state[idx]);
+}
+
+function goTo(idx, pos) {
+  state[idx] = pos;
+  const slides = document.getElementById('slides-' + idx);
+  if (slides) slides.style.transform = `translateX(-${pos * 100}%)`;
+  const dotsEl = document.getElementById('dots-' + idx);
+  if (dotsEl) dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === pos));
+}
+
+function buildCard(im, idx) {
+  const badgeClass = im.tipo === 'venda' ? '' : 'aluguel';
+  const badgeLabel = im.tipo === 'venda' ? '🏷️ Venda' : '🔑 Aluguel';
+  const msg = encodeURIComponent(`Olá! Tenho interesse no imóvel: ${im.titulo} – ${im.preco}${im.por}`);
+  const slides = im.fotos.map(f => `<div class="gallery-slide"><img src="${f}" alt="${im.titulo}" loading="lazy" /></div>`).join('');
+  const dots = im.fotos.map((_, i) => `<span class="dot ${i===0?'active':''}" onclick="goTo(${idx},${i})"></span>`).join('');
+  return `
+  <div class="card" data-tipo="${im.tipo}">
+    <div class="gallery">
+      <span class="card-badge ${badgeClass}">${badgeLabel}</span>
+      <div class="gallery-slides" id="slides-${idx}">${slides}</div>
+      ${im.fotos.length > 1 ? `
+      <button class="gallery-btn prev" onclick="move(${idx},-1)">&#8249;</button>
+      <button class="gallery-btn next" onclick="move(${idx},1)">&#8250;</button>
+      <div class="gallery-dots" id="dots-${idx}">${dots}</div>` : ''}
+    </div>
+    <div class="card-body">
+      <div class="card-price">${im.preco}<span>${im.por}</span></div>
+      <div class="card-title">${im.titulo}</div>
+      <div class="card-features">
+        <span class="feat">${im.tipo === 'venda' ? '💰 Venda' : '🔑 Locação'}</span>
+        <span class="feat">📸 ${im.fotos.length} fotos</span>
+      </div>
+    </div>
+    <div class="card-footer">
+      <a class="btn-contato" href="${WA}?text=${msg}" target="_blank">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Tenho Interesse
+      </a>
+    </div>
+  </div>`;
+}
+
+function filtrar(btn, tipo) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const lista = tipo === 'todos' ? imoveis : imoveis.filter(i => i.tipo === tipo);
+  renderCards(lista);
+}
+
+function renderCards(lista) {
+  const grid = document.getElementById('grid');
+  document.getElementById('results-count').textContent = lista.length + (lista.length === 1 ? ' imóvel encontrado' : ' imóveis encontrados');
+  if (lista.length === 0) { grid.innerHTML = '<div class="empty">Nenhum imóvel encontrado.</div>'; return; }
+  grid.innerHTML = lista.map(im => buildCard(im, imoveis.indexOf(im))).join('');
+}
+
+renderCards(imoveis);
+</script>
+</body>
+</html>

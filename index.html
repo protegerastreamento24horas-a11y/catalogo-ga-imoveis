@@ -3,7 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>G A Imóveis – Catálogo Oficial</title>
+  <title>G A Imóveis | Catálogo Oficial de Imóveis</title>
+  <meta name="description" content="G A Imóveis – Catálogo Oficial. Imóveis selecionados para venda e locação com fotos em alta definição e atendimento exclusivo via WhatsApp." />
+  
+  <!-- Open Graph / WhatsApp Preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="G A Imóveis | Catálogo Oficial de Imóveis" />
+  <meta property="og:description" content="Confira apartamentos, flats, coberturas e salas comerciais exclusivas. Fotos em alta resolução e agendamento de visitas direto no WhatsApp." />
+  <meta property="og:url" content="https://catalogo-ga-imoveis.vercel.app" />
+  <meta property="og:image" content="https://catalogo-ga-imoveis.vercel.app/banner.jpg" />
+  <meta property="og:image:secure_url" content="https://catalogo-ga-imoveis.vercel.app/banner.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1248" />
+  <meta property="og:image:height" content="383" />
+  <meta property="og:site_name" content="G A Imóveis" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="G A Imóveis | Catálogo Oficial de Imóveis" />
+  <meta name="twitter:description" content="Confira apartamentos, flats e coberturas exclusivas com atendimento no WhatsApp." />
+  <meta name="twitter:image" content="https://catalogo-ga-imoveis.vercel.app/banner.jpg" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="logo.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -818,6 +840,7 @@ const imoveis = [
     titulo: "Biarritiz",
     preco: "R$ 3.300",
     por: "/mês",
+    resumo: ["Apartamento", "Lazer Completo", "Portaria 24h", "Garagem"],
     desc: "Excelente apartamento no condomínio Biarritiz. Ambientes planejados, ótima iluminação natural e ventilação. Condomínio com infraestrutura completa de segurança e lazer, perfeito para quem busca qualidade de vida e praticidade no dia a dia.",
     diferenciais: ["Portaria 24 Horas", "Área de Lazer Completa", "Piscina Adulto e Infantil", "Vaga de Garagem", "Excelente Ventilação", "Localização Privilegiada"],
     fotos: ["fotos/biarritiz_aluguel/foto1.jpg","fotos/biarritiz_aluguel/foto2.jpg","fotos/biarritiz_aluguel/foto3.jpg","fotos/biarritiz_aluguel/foto4.jpg","fotos/biarritiz_aluguel/foto5.jpg"]
@@ -828,6 +851,7 @@ const imoveis = [
     titulo: "Biarritiz",
     preco: "R$ 400.000",
     por: "",
+    resumo: ["Imóvel Quitado", "Varanda", "Lazer Clube", "Alta Valorização"],
     desc: "Oportunidade única para aquisição no Biarritiz. Imóvel com planta inteligente, fino acabamento, varanda agradável e ótima valorização patrimonial. Pronto para morar ou rentabilizar.",
     diferenciais: ["Imóvel Quitado", "Varanda Aconchegante", "Segurança 24h", "Salão de Festas", "Condomínio Clube", "Alta Valorização"],
     fotos: ["fotos/biarritiz_venda/foto1.png","fotos/biarritiz_venda/foto2.png","fotos/biarritiz_venda/foto3.png","fotos/biarritiz_venda/foto4.png","fotos/biarritiz_venda/foto5.png"]
@@ -838,6 +862,7 @@ const imoveis = [
     titulo: "Bonavita Prime",
     preco: "R$ 3.000",
     por: "/mês",
+    resumo: ["Condomínio Clube", "Piscina Resort", "Academia", "Garagem Privativa"],
     desc: "Apartamento no prestigiado Bonavita Prime. Espaços amplos, sala arejada, quartos confortáveis e condomínio fechado com lazer padrão resort. Próximo aos principais serviços da região.",
     diferenciais: ["Piscina Resort", "Quadra Poliesportiva", "Academia Equipada", "Espaço Gourmet", "Portaria Blindada", "Garagem Privativa"],
     fotos: ["fotos/bonavita_prime/foto1.jpg","fotos/bonavita_prime/foto2.jpg","fotos/bonavita_prime/foto3.jpg","fotos/bonavita_prime/foto4.jpg","fotos/bonavita_prime/foto5.jpg"]
@@ -848,6 +873,7 @@ const imoveis = [
     titulo: "Centro Comercial Arraçagy",
     preco: "R$ 2.500",
     por: "/mês",
+    resumo: ["Ponto Comercial", "Estacionamento Amplo", "Alto Fluxo", "Fácil Acesso"],
     desc: "Ponto comercial estratégico no Centro Comercial Arraçagy. Excelente visibilidade, fácil acesso para clientes, estacionamento frontal e estrutura ideal para escritórios, clínicas e lojas.",
     diferenciais: ["Ponto Comercial", "Estacionamento Amplo", "Fácil Acesso", "Alta Visibilidade", "Fluxo Constante", "Ideal para Negócios"],
     fotos: ["fotos/centro_comercial/foto1.jpg","fotos/centro_comercial/foto2.jpg","fotos/centro_comercial/foto3.jpg","fotos/centro_comercial/foto4.jpg","fotos/centro_comercial/foto5.jpg"]
@@ -858,6 +884,7 @@ const imoveis = [
     titulo: "Edifício Munin",
     preco: "R$ 2.300",
     por: "/mês",
+    resumo: ["Apartamento", "Vaga Marcada", "Ambientes Arejados", "Baixo Condomínio"],
     desc: "Apartamento funcional no Edifício Munin. Perfeito equilíbrio entre custo-benefício e localização conveniente. Bairro tranquilo e seguro, próximo a farmácias, supermercados e vias rápidas.",
     diferenciais: ["Excelente Custo-Benefício", "Ambientes Arejados", "Portaria Segura", "Vaga Marcada", "Bairro Residencial", "Próximo a Serviços"],
     fotos: ["fotos/munin/foto1.jpg","fotos/munin/foto2.jpg","fotos/munin/foto3.jpg","fotos/munin/foto4.jpg","fotos/munin/foto5.jpg"]
@@ -868,6 +895,7 @@ const imoveis = [
     titulo: "Fit Life",
     preco: "R$ 3.500",
     por: "/mês",
+    resumo: ["Condomínio Clube", "Parque Aquático", "Academia", "Vigilância 24h"],
     desc: "More no Fit Life com todo o lazer e bem-estar que sua família merece. Condomínio com parque aquático, academia moderna, quadras, quiosques com churrasqueira e segurança rigorosa.",
     diferenciais: ["Parque Aquático", "Academia Climatizada", "Churrasqueiras", "Brinquedoteca", "Vigilância 24h", "Varanda Integrada"],
     fotos: ["fotos/fit_life/foto1.png","fotos/fit_life/foto2.png","fotos/fit_life/foto3.png","fotos/fit_life/foto4.png","fotos/fit_life/foto5.png"]
@@ -878,6 +906,7 @@ const imoveis = [
     titulo: "Flat Bellagio",
     preco: "R$ 250.000",
     por: "",
+    resumo: ["Flat Mobiliável", "Recepção / Concierge", "Alta Demanda", "Ideal P/ Renda"],
     desc: "Excelente opção de Flat no Bellagio para moradia ou investimento em locação (Airbnb/Booking). Imóvel compacto, moderno, com serviços pay-per-use e condomínio enxuto.",
     diferenciais: ["Ideal para Investimento", "Alta Demanda de Locação", "Recepção / Concierge", "Mobiliável Rápido", "Baixo Condomínio", "Pronto para Escriturar"],
     fotos: ["fotos/flat_bellagio/foto1.jpg","fotos/flat_bellagio/foto2.jpg","fotos/flat_bellagio/foto3.jpg","fotos/flat_bellagio/foto4.jpg"]
@@ -888,6 +917,7 @@ const imoveis = [
     titulo: "Studio Design Holandeses",
     preco: "R$ 475.000",
     por: "",
+    resumo: ["Studio Design", "Av. dos Holandeses", "Rooftop Panorâmico", "Alto Padrão"],
     desc: "Conceito Studio Design na nobre Avenida dos Holandeses. Arquitetura moderna, ambientes integrados, rooftop com vista panorâmica e alto padrão construtivo. O endereço mais valorizado da cidade.",
     diferenciais: ["Av. dos Holandeses", "Rooftop Panorâmico", "Design Contemporâneo", "Acabamento Premium", "Piscina Borda Infinita", "Alta Liquidez"],
     fotos: ["fotos/studio_design/foto1.jpg","fotos/studio_design/foto2.jpg","fotos/studio_design/foto3.jpg","fotos/studio_design/foto4.jpg","fotos/studio_design/foto5.jpg"]
@@ -898,6 +928,7 @@ const imoveis = [
     titulo: "Ilha de Havana",
     preco: "R$ 2.600",
     por: "/mês",
+    resumo: ["Apartamento", "Piscina", "Portaria 24h", "Garagem Privativa"],
     desc: "Apartamento aconchegante no condomínio Ilha de Havana. Imóvel muito bem cuidado, boa ventilação, condomínio organizado e seguro, com área de convivência e lazer para os moradores.",
     diferenciais: ["Condomínio Organizado", "Lazer com Piscina", "Playground", "Portaria 24 Horas", "Garagem Privativa", "Bairro Estruturado"],
     fotos: ["fotos/ilha_havana/foto1.jpg","fotos/ilha_havana/foto2.jpg","fotos/ilha_havana/foto3.jpg","fotos/ilha_havana/foto4.jpg","fotos/ilha_havana/foto5.jpg"]
@@ -908,6 +939,7 @@ const imoveis = [
     titulo: "La Quintas Studios",
     preco: "R$ 3.000",
     por: "/mês",
+    resumo: ["Studio Sofisticado", "Localização Nobre", "Portaria 24h", "Praticidade"],
     desc: "Studio sofisticado no La Quintas. Conforto, praticidade e elegância reunidos em um único projeto. Perfeito para executivos, profissionais liberais e pessoas que valorizam estilo.",
     diferenciais: ["Conceito Studio Sofisticado", "Praticidade Total", "Localização Nobre", "Acabamento Superior", "Área de Convivência", "Segurança Total"],
     fotos: ["fotos/la_quintas/foto1.jpg","fotos/la_quintas/foto2.jpg","fotos/la_quintas/foto3.jpg","fotos/la_quintas/foto4.jpg","fotos/la_quintas/foto5.jpg"]
@@ -918,6 +950,7 @@ const imoveis = [
     titulo: "Number One",
     preco: "R$ 400.000",
     por: "",
+    resumo: ["Suíte Confortável", "Varanda Arejada", "Piscina", "Excelente Local"],
     desc: "Apartamento no Number One com excelente planta e distribuição de cômodos. Empreendimento consolidado, próximo a shoppings, praias e restaurantes conceituados.",
     diferenciais: ["Localização Privilegiada", "Suíte Confortável", "Varanda Arejada", "Lazer com Piscina", "Excelente Investimento", "Documentação Ok"],
     fotos: ["fotos/number_one_400/foto1.png","fotos/number_one_400/foto2.png","fotos/number_one_400/foto3.png","fotos/number_one_400/foto4.png","fotos/number_one_400/foto5.png"]
@@ -928,6 +961,7 @@ const imoveis = [
     titulo: "Number One – Alto Padrão",
     preco: "R$ 750.000",
     por: "",
+    resumo: ["Alto Padrão", "2 Vagas de Garagem", "Varanda Gourmet", "Suítes Amplas"],
     desc: "Unidade exclusiva de alto padrão no Number One. Planta generosa, acabamento premium em todos os detalhes, varanda gourmet imponente, suítes amplas e 2 vagas de garagem privativas.",
     diferenciais: ["Alto Padrão Construtivo", "2 Vagas de Garagem", "Varanda Gourmet", "Suítes Espaçosas", "Vista Panorâmica", "Condomínio Clube Exclusivo"],
     fotos: ["fotos/number_one_750/foto1.jpg","fotos/number_one_750/foto2.jpg","fotos/number_one_750/foto3.jpg","fotos/number_one_750/foto4.jpg","fotos/number_one_750/foto5.jpg"]
@@ -938,6 +972,7 @@ const imoveis = [
     titulo: "Porto Madeiro",
     preco: "R$ 8.500",
     por: "/mês",
+    resumo: ["Frente Mar Exclusivo", "Varanda Panorâmica", "Suítes Master", "Alto Luxo"],
     desc: "Apartamento de altíssimo luxo no Porto Madeiro. Endereço exclusivo na orla marítima, varanda imensa com vista deslumbrante para o mar, fino acabamento e infraestrutura de resort 5 estrelas.",
     diferenciais: ["Frente Mar Exclusivo", "Varanda Panorâmica Gigante", "Suítes Master", "Acabamento Nobre", "Segurança Máxima 24h", "Complexo de Lazer VIP"],
     fotos: ["fotos/porto_madeiro/foto1.jpg","fotos/porto_madeiro/foto2.jpg","fotos/porto_madeiro/foto3.jpg","fotos/porto_madeiro/foto4.jpg","fotos/porto_madeiro/foto5.jpg"]
@@ -948,6 +983,7 @@ const imoveis = [
     titulo: "Solar Ilha III",
     preco: "R$ 2.200",
     por: "/mês",
+    resumo: ["Condomínio Fechado", "Piscina & Lazer", "Vaga de Garagem", "Portaria 24h"],
     desc: "Apartamento aconchegante e seguro no condomínio Solar da Ilha III. Ótima opção para famílias que buscam tranquilidade, lazer com piscina e fácil acesso ao transporte e comércio.",
     diferenciais: ["Condomínio Tranquilo", "Piscina e Churrasqueira", "Vaga de Garagem", "Portaria com Controle de Acesso", "Baixo Custo Mensal", "Pronto p/ Morar"],
     fotos: ["fotos/solar_ilha/foto1.jpg","fotos/solar_ilha/foto2.jpg","fotos/solar_ilha/foto3.jpg","fotos/solar_ilha/foto4.jpg","fotos/solar_ilha/foto5.jpg"]
@@ -958,6 +994,7 @@ const imoveis = [
     titulo: "Cond. Pleno Residence (Mobiliado)",
     preco: "R$ 4.400",
     por: "/mês (Condomínio incluso)",
+    resumo: ["Totalmente Mobiliado", "3 Quartos (1 Suíte)", "Varanda Gourmet", "2 Vagas de Garagem"],
     desc: "Apartamento totalmente mobiliado no Condomínio Pleno Residence. Composto por sala de estar e sala de jantar integradas, varanda gourmet, banheiro social (com armários e box), 3 dormitórios sendo 1 suíte, cozinha com armários planejados, área de serviço e 2 vagas de garagem privativas. Condomínio clube completo com portaria 24h, sala de Home Cinema, salão de festas, espaço gourmet, brinquedoteca, salão de jogos, academia completa, churrasqueira com forno de pizza e piscinas adulto com deck e infantil.",
     diferenciais: [
       "Totalmente Mobiliado",
@@ -1009,6 +1046,7 @@ function buildCard(im, idx) {
   const msg = encodeURIComponent(`Olá! Tenho interesse no imóvel: ${im.titulo} – ${im.preco}${im.por}`);
   const slides = im.fotos.map(f => `<div class="gallery-slide"><img src="${f}" alt="${im.titulo}" loading="lazy" /></div>`).join('');
   const dots = im.fotos.map((_, i) => `<span class="dot ${i===0?'active':''}" onclick="goToCardSlide(${idx},${i},event)"></span>`).join('');
+  const tags = (im.resumo || im.diferenciais.slice(0, 3)).map(t => `<span class="feat">${t}</span>`).join('');
   
   return `
   <div class="card" id="imovel-${im.id}" data-tipo="${im.tipo}" onclick="abrirFicha(${idx})">
@@ -1026,9 +1064,7 @@ function buildCard(im, idx) {
       <div class="card-title">${im.titulo}</div>
       <div class="card-desc-preview">${im.desc}</div>
       <div class="card-features">
-        <span class="feat">${im.tipo === 'venda' ? 'Venda' : 'Locação'}</span>
-        <span class="feat">${im.fotos.length} Fotos</span>
-        <span class="feat">Ficha Completa</span>
+        ${tags}
       </div>
     </div>
     <div class="card-footer" onclick="event.stopPropagation()">

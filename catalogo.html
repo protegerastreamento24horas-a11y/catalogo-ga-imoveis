@@ -24,7 +24,7 @@
       
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
       --shadow-md: 0 4px 14px rgba(0,0,0,0.08);
-      --shadow-lg: 0 12px 32px rgba(0,0,0,0.12);
+      --shadow-lg: 0 12px 32px rgba(0,0,0,0.14);
       --radius: 12px;
       --radius-sm: 6px;
     }
@@ -221,6 +221,7 @@
       transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
       display: flex; flex-direction: column;
       scroll-margin-top: 150px;
+      cursor: pointer;
     }
     .card:hover {
       transform: translateY(-4px);
@@ -239,7 +240,7 @@
       100% { transform: scale(1); }
     }
 
-    .gallery { position: relative; height: 220px; overflow: hidden; background: var(--gray-100); }
+    .gallery { position: relative; height: 230px; overflow: hidden; background: var(--gray-100); }
     .gallery-slides { display: flex; height: 100%; transition: transform .35s cubic-bezier(.4, 0, .2, 1); }
     .gallery-slide { min-width: 100%; height: 100%; }
     .gallery-slide img {
@@ -279,6 +280,14 @@
       border: 1px solid var(--black);
     }
 
+    .card-tag-zoom {
+      position: absolute; top: 12px; right: 12px;
+      background: rgba(0,0,0,0.6); color: var(--white);
+      padding: .25rem .6rem; border-radius: 4px;
+      font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+      z-index: 4; backdrop-filter: blur(4px);
+    }
+
     .card-body { padding: 1.2rem; flex: 1; display: flex; flex-direction: column; gap: .6rem; }
     .card-price {
       font-size: 1.45rem; font-weight: 900;
@@ -291,12 +300,16 @@
       font-size: 1rem; font-weight: 700; color: var(--black-soft);
       line-height: 1.35;
     }
+    .card-desc-preview {
+      font-size: .82rem; color: var(--gray-600); line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
     .card-features { display: flex; gap: .45rem; flex-wrap: wrap; margin-top: .15rem; }
     .feat {
       background: var(--gray-100); border: 1px solid var(--gray-200);
       border-radius: var(--radius-sm);
-      font-size: .74rem; font-weight: 600; color: var(--gray-800);
-      padding: .25rem .6rem; text-transform: uppercase; letter-spacing: .5px;
+      font-size: .72rem; font-weight: 600; color: var(--gray-800);
+      padding: .25rem .55rem; text-transform: uppercase; letter-spacing: .5px;
     }
 
     /* ── CARD FOOTER & AÇÕES ── */
@@ -304,11 +317,25 @@
       padding: 0 1.2rem 1.2rem;
       display: flex; gap: .5rem; align-items: center;
     }
+    .btn-detalhes {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center; gap: .45rem;
+      background: var(--white); color: var(--black);
+      font-family: inherit; font-size: .84rem; font-weight: 700;
+      padding: .75rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--black);
+      cursor: pointer; text-decoration: none;
+      transition: all .2s ease;
+      text-transform: uppercase; letter-spacing: .5px;
+    }
+    .btn-detalhes:hover {
+      background: var(--black); color: var(--white);
+    }
+
     .btn-contato {
       flex: 1;
-      display: flex; align-items: center; justify-content: center; gap: .5rem;
+      display: flex; align-items: center; justify-content: center; gap: .45rem;
       background: var(--black); color: var(--white);
-      font-family: inherit; font-size: .86rem; font-weight: 700;
+      font-family: inherit; font-size: .84rem; font-weight: 700;
       padding: .75rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--black);
       cursor: pointer; text-decoration: none;
       transition: all .2s ease;
@@ -317,14 +344,13 @@
     .btn-contato:hover {
       background: var(--gray-800);
       border-color: var(--gray-800);
-      transform: translateY(-1px);
     }
 
     .btn-share {
       background: var(--white);
       border: 1px solid var(--gray-300);
       color: var(--black);
-      width: 44px; height: 44px;
+      width: 42px; height: 42px;
       border-radius: var(--radius-sm);
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; transition: all .2s ease;
@@ -334,8 +360,169 @@
       background: var(--black);
       color: var(--white);
       border-color: var(--black);
-      transform: translateY(-1px);
     }
+
+    /* ── MODAL FICHA TÉCNICA DO IMÓVEL (EXPANDIDA / TELA CHEIA) ── */
+    .ficha-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 250;
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s ease;
+    }
+    .ficha-overlay.active { opacity: 1; pointer-events: auto; }
+    .ficha-modal {
+      background: var(--white);
+      border-radius: var(--radius);
+      width: 100%; max-width: 960px;
+      max-height: 90vh;
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--gray-800);
+      transform: translateY(20px) scale(0.98);
+      transition: transform .3s ease;
+    }
+    .ficha-overlay.active .ficha-modal { transform: translateY(0) scale(1); }
+
+    .ficha-header {
+      padding: 1.25rem 1.75rem;
+      background: var(--black);
+      color: var(--white);
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--gray-800);
+    }
+    .ficha-header-info { display: flex; align-items: center; gap: .8rem; }
+    .ficha-header-badge {
+      font-size: .7rem; font-weight: 800; padding: .3rem .75rem;
+      border-radius: 50px; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .ficha-header-badge.venda { background: var(--white); color: var(--black); }
+    .ficha-header-badge.aluguel { background: transparent; color: var(--white); border: 1px solid var(--white); }
+    .ficha-header-title { font-size: 1.25rem; font-weight: 800; letter-spacing: -.5px; }
+
+    .ficha-close {
+      background: none; border: 1px solid var(--gray-700);
+      color: var(--white); width: 36px; height: 36px; border-radius: 50%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; transition: all .2s;
+    }
+    .ficha-close:hover { background: var(--white); color: var(--black); }
+
+    .ficha-body {
+      overflow-y: auto;
+      display: grid; grid-template-columns: 1.3fr 1fr;
+      flex: 1;
+    }
+
+    /* Galeria Ficha */
+    .ficha-gallery-col {
+      background: var(--black-soft);
+      padding: 1.5rem;
+      display: flex; flex-direction: column;
+      gap: 1rem;
+    }
+    .ficha-main-photo-wrap {
+      position: relative;
+      height: 380px; width: 100%;
+      background: var(--black);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ficha-main-photo {
+      width: 100%; height: 100%; object-fit: contain; display: block;
+    }
+    .ficha-nav-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,0.7); color: var(--white); border: 1px solid rgba(255,255,255,0.2);
+      width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; transition: background .2s; z-index: 5;
+    }
+    .ficha-nav-btn:hover { background: var(--black); border-color: var(--white); }
+    .ficha-nav-btn.prev { left: 10px; }
+    .ficha-nav-btn.next { right: 10px; }
+    .ficha-counter {
+      position: absolute; bottom: 12px; right: 12px;
+      background: rgba(0,0,0,0.75); color: var(--white);
+      padding: .3rem .7rem; border-radius: 4px; font-size: .75rem;
+      font-weight: 700; letter-spacing: 1px;
+    }
+
+    /* Miniaturas (Thumbnails) */
+    .ficha-thumbs {
+      display: flex; gap: .6rem; overflow-x: auto; padding-bottom: .4rem;
+    }
+    .ficha-thumb {
+      width: 72px; height: 56px; border-radius: 4px;
+      overflow: hidden; cursor: pointer; flex-shrink: 0;
+      border: 2px solid transparent; opacity: 0.6;
+      transition: all .2s;
+    }
+    .ficha-thumb:hover { opacity: 0.9; }
+    .ficha-thumb.active { border-color: var(--white); opacity: 1; }
+    .ficha-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Detalhes Coluna Direita */
+    .ficha-details-col {
+      padding: 2rem;
+      display: flex; flex-direction: column;
+      gap: 1.5rem;
+      background: var(--white);
+    }
+    .ficha-price-block {
+      border-bottom: 1px solid var(--gray-200);
+      padding-bottom: 1.25rem;
+    }
+    .ficha-price-label { font-size: .75rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; letter-spacing: 1px; }
+    .ficha-price-val { font-size: 2rem; font-weight: 900; color: var(--black); letter-spacing: -.5px; }
+    .ficha-price-val span { font-size: .95rem; font-weight: 500; color: var(--gray-600); }
+
+    .ficha-section-title {
+      font-size: .85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+      color: var(--black); margin-bottom: .6rem;
+    }
+    .ficha-desc-text {
+      font-size: .92rem; color: var(--gray-700); line-height: 1.6;
+    }
+
+    .ficha-features-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .6rem;
+    }
+    .ficha-feat-item {
+      background: var(--gray-50); border: 1px solid var(--gray-200);
+      padding: .6rem .8rem; border-radius: var(--radius-sm);
+      font-size: .8rem; font-weight: 600; color: var(--black);
+      display: flex; align-items: center; gap: .5rem;
+    }
+
+    .ficha-footer-actions {
+      margin-top: auto; padding-top: 1.5rem;
+      border-top: 1px solid var(--gray-200);
+      display: flex; flex-direction: column; gap: .75rem;
+    }
+    .ficha-btn-wa {
+      background: var(--black); color: var(--white);
+      padding: 1rem 1.5rem; border-radius: var(--radius-sm);
+      font-size: .9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+      text-decoration: none; display: flex; align-items: center; justify-content: center; gap: .6rem;
+      transition: all .2s; border: 1px solid var(--black);
+    }
+    .ficha-btn-wa:hover {
+      background: var(--gray-800); transform: translateY(-1px);
+    }
+    .ficha-btn-share {
+      background: var(--white); color: var(--black);
+      padding: .75rem 1.5rem; border-radius: var(--radius-sm);
+      font-size: .85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: .5rem;
+      border: 1px solid var(--gray-300); transition: all .2s;
+    }
+    .ficha-btn-share:hover { background: var(--gray-100); border-color: var(--black); }
 
     /* ── RODAPÉ ATENDIMENTO ── */
     .contact-section {
@@ -412,7 +599,7 @@
       position: fixed; inset: 0;
       background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(4px);
-      z-index: 200;
+      z-index: 300;
       display: flex; align-items: center; justify-content: center;
       padding: 1rem;
       opacity: 0; pointer-events: none;
@@ -494,7 +681,7 @@
       position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%) translateY(80px);
       background: var(--black); color: var(--white); padding: .75rem 1.4rem;
       border-radius: 50px; font-size: .85rem; font-weight: 700;
-      box-shadow: var(--shadow-lg); z-index: 300; display: flex; align-items: center; gap: .5rem;
+      box-shadow: var(--shadow-lg); z-index: 400; display: flex; align-items: center; gap: .5rem;
       border: 1px solid var(--gray-800);
       opacity: 0; pointer-events: none; transition: transform .3s ease, opacity .3s ease;
       text-transform: uppercase; letter-spacing: .5px;
@@ -504,6 +691,12 @@
       opacity: 1;
     }
 
+    @media (max-width: 860px) {
+      .ficha-body { grid-template-columns: 1fr; }
+      .ficha-main-photo-wrap { height: 280px; }
+      .ficha-details-col { padding: 1.5rem; }
+      .ficha-modal { max-height: 94vh; }
+    }
     @media (max-width: 768px) {
       .hero-banner { max-height: 320px; }
       .hero-banner-overlay { padding: 1.5rem; }
@@ -518,6 +711,7 @@
       .grid { grid-template-columns: 1fr; }
       .filters-inner { gap: .5rem; }
       .hero-banner { max-height: 250px; }
+      .ficha-overlay { padding: .5rem; }
     }
   </style>
 </head>
@@ -572,6 +766,59 @@
   <h2>Imóveis Disponíveis</h2>
   <div class="grid" id="grid"></div>
 </section>
+
+<!-- MODAL FICHA TÉCNICA DO IMÓVEL (EXPANDIDO COM FOTOS EM ALTA) -->
+<div class="ficha-overlay" id="fichaOverlay" onclick="fecharFichaFora(event)">
+  <div class="ficha-modal" role="dialog" aria-modal="true">
+    <div class="ficha-header">
+      <div class="ficha-header-info">
+        <span class="ficha-header-badge" id="fichaBadge"></span>
+        <div class="ficha-header-title" id="fichaTitulo"></div>
+      </div>
+      <button class="ficha-close" onclick="fecharFicha()" title="Fechar Ficha">&times;</button>
+    </div>
+    <div class="ficha-body">
+      <!-- Coluna da Galeria -->
+      <div class="ficha-gallery-col">
+        <div class="ficha-main-photo-wrap">
+          <img id="fichaMainImg" class="ficha-main-photo" src="" alt="Foto Principal" />
+          <button class="ficha-nav-btn prev" onclick="moveFicha(-1)" aria-label="Foto anterior">&#8249;</button>
+          <button class="ficha-nav-btn next" onclick="moveFicha(1)" aria-label="Próxima foto">&#8250;</button>
+          <div class="ficha-counter" id="fichaCounter">1 / 5</div>
+        </div>
+        <div class="ficha-thumbs" id="fichaThumbs"></div>
+      </div>
+      <!-- Coluna dos Detalhes Técnicos -->
+      <div class="ficha-details-col">
+        <div class="ficha-price-block">
+          <div class="ficha-price-label">Valor do Investimento</div>
+          <div class="ficha-price-val" id="fichaPreco"></div>
+        </div>
+        <div>
+          <div class="ficha-section-title">Sobre o Imóvel</div>
+          <div class="ficha-desc-text" id="fichaDesc"></div>
+        </div>
+        <div>
+          <div class="ficha-section-title">Diferenciais e Estrutura</div>
+          <div class="ficha-features-grid" id="fichaFeatures"></div>
+        </div>
+        <div class="ficha-footer-actions">
+          <a class="ficha-btn-wa" id="fichaBtnWa" href="#" target="_blank">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Agendar Visita no WhatsApp
+          </a>
+          <button class="ficha-btn-share" id="fichaBtnShare" onclick="abrirCompartilharDeFicha()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+            Compartilhar Ficha com Cliente
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- RODAPÉ ATENDIMENTO -->
 <section class="contact-section">
@@ -629,33 +876,163 @@
 const WA = "https://wa.me/message/2R2A4LNEO6W2N1";
 
 const imoveis = [
-  { id: 1,  tipo:"aluguel", titulo:"Biarritiz",                       preco:"R$ 3.300", por:"/mês",  fotos:["fotos/biarritiz_aluguel/foto1.jpg","fotos/biarritiz_aluguel/foto2.jpg","fotos/biarritiz_aluguel/foto3.jpg","fotos/biarritiz_aluguel/foto4.jpg","fotos/biarritiz_aluguel/foto5.jpg"] },
-  { id: 2,  tipo:"venda",  titulo:"Biarritiz",                        preco:"R$ 400.000", por:"",   fotos:["fotos/biarritiz_venda/foto1.png","fotos/biarritiz_venda/foto2.png","fotos/biarritiz_venda/foto3.png","fotos/biarritiz_venda/foto4.png","fotos/biarritiz_venda/foto5.png"] },
-  { id: 3,  tipo:"aluguel", titulo:"Bonavita Prime",                  preco:"R$ 3.000", por:"/mês",  fotos:["fotos/bonavita_prime/foto1.jpg","fotos/bonavita_prime/foto2.jpg","fotos/bonavita_prime/foto3.jpg","fotos/bonavita_prime/foto4.jpg","fotos/bonavita_prime/foto5.jpg"] },
-  { id: 4,  tipo:"aluguel", titulo:"Centro Comercial Arraçagy",       preco:"R$ 2.500", por:"/mês",  fotos:["fotos/centro_comercial/foto1.jpg","fotos/centro_comercial/foto2.jpg","fotos/centro_comercial/foto3.jpg","fotos/centro_comercial/foto4.jpg","fotos/centro_comercial/foto5.jpg"] },
-  { id: 5,  tipo:"aluguel", titulo:"Edifício Munin",                  preco:"R$ 2.300", por:"/mês",  fotos:["fotos/munin/foto1.jpg","fotos/munin/foto2.jpg","fotos/munin/foto3.jpg","fotos/munin/foto4.jpg","fotos/munin/foto5.jpg"] },
-  { id: 6,  tipo:"aluguel", titulo:"Fit Life",                        preco:"R$ 3.500", por:"/mês",  fotos:["fotos/fit_life/foto1.png","fotos/fit_life/foto2.png","fotos/fit_life/foto3.png","fotos/fit_life/foto4.png","fotos/fit_life/foto5.png"] },
-  { id: 7,  tipo:"venda",  titulo:"Flat Bellagio",                    preco:"R$ 250.000", por:"",   fotos:["fotos/flat_bellagio/foto1.jpg","fotos/flat_bellagio/foto2.jpg","fotos/flat_bellagio/foto3.jpg","fotos/flat_bellagio/foto4.jpg"] },
-  { id: 8,  tipo:"venda",  titulo:"Studio Design Holandeses",         preco:"R$ 475.000", por:"",   fotos:["fotos/studio_design/foto1.jpg","fotos/studio_design/foto2.jpg","fotos/studio_design/foto3.jpg","fotos/studio_design/foto4.jpg","fotos/studio_design/foto5.jpg"] },
-  { id: 9,  tipo:"aluguel", titulo:"Ilha de Havana",                  preco:"R$ 2.600", por:"/mês",  fotos:["fotos/ilha_havana/foto1.jpg","fotos/ilha_havana/foto2.jpg","fotos/ilha_havana/foto3.jpg","fotos/ilha_havana/foto4.jpg","fotos/ilha_havana/foto5.jpg"] },
-  { id: 10, tipo:"aluguel", titulo:"La Quintas Studios",              preco:"R$ 3.000", por:"/mês",  fotos:["fotos/la_quintas/foto1.jpg","fotos/la_quintas/foto2.jpg","fotos/la_quintas/foto3.jpg","fotos/la_quintas/foto4.jpg","fotos/la_quintas/foto5.jpg"] },
-  { id: 11, tipo:"venda",  titulo:"Number One",                       preco:"R$ 400.000", por:"",   fotos:["fotos/number_one_400/foto1.png","fotos/number_one_400/foto2.png","fotos/number_one_400/foto3.png","fotos/number_one_400/foto4.png","fotos/number_one_400/foto5.png"] },
-  { id: 12, tipo:"venda",  titulo:"Number One – Alto Padrão",         preco:"R$ 750.000", por:"",   fotos:["fotos/number_one_750/foto1.jpg","fotos/number_one_750/foto2.jpg","fotos/number_one_750/foto3.jpg","fotos/number_one_750/foto4.jpg","fotos/number_one_750/foto5.jpg"] },
-  { id: 13, tipo:"aluguel", titulo:"Porto Madeiro",                   preco:"R$ 8.500", por:"/mês",  fotos:["fotos/porto_madeiro/foto1.jpg","fotos/porto_madeiro/foto2.jpg","fotos/porto_madeiro/foto3.jpg","fotos/porto_madeiro/foto4.jpg","fotos/porto_madeiro/foto5.jpg"] },
-  { id: 14, tipo:"aluguel", titulo:"Solar Ilha III",                  preco:"R$ 2.200", por:"/mês",  fotos:["fotos/solar_ilha/foto1.jpg","fotos/solar_ilha/foto2.jpg","fotos/solar_ilha/foto3.jpg","fotos/solar_ilha/foto4.jpg","fotos/solar_ilha/foto5.jpg"] }
+  {
+    id: 1,
+    tipo: "aluguel",
+    titulo: "Biarritiz",
+    preco: "R$ 3.300",
+    por: "/mês",
+    desc: "Excelente apartamento no condomínio Biarritiz. Ambientes planejados, ótima iluminação natural e ventilação. Condomínio com infraestrutura completa de segurança e lazer, perfeito para quem busca qualidade de vida e praticidade no dia a dia.",
+    diferenciais: ["Portaria 24 Horas", "Área de Lazer Completa", "Piscina Adulto e Infantil", "Vaga de Garagem", "Excelente Ventilação", "Localização Privilegiada"],
+    fotos: ["fotos/biarritiz_aluguel/foto1.jpg","fotos/biarritiz_aluguel/foto2.jpg","fotos/biarritiz_aluguel/foto3.jpg","fotos/biarritiz_aluguel/foto4.jpg","fotos/biarritiz_aluguel/foto5.jpg"]
+  },
+  {
+    id: 2,
+    tipo: "venda",
+    titulo: "Biarritiz",
+    preco: "R$ 400.000",
+    por: "",
+    desc: "Oportunidade única para aquisição no Biarritiz. Imóvel com planta inteligente, fino acabamento, varanda agradável e ótima valorização patrimonial. Pronto para morar ou rentabilizar.",
+    diferenciais: ["Imóvel Quitado", "Varanda Aconchegante", "Segurança 24h", "Salão de Festas", "Condomínio Clube", "Alta Valorização"],
+    fotos: ["fotos/biarritiz_venda/foto1.png","fotos/biarritiz_venda/foto2.png","fotos/biarritiz_venda/foto3.png","fotos/biarritiz_venda/foto4.png","fotos/biarritiz_venda/foto5.png"]
+  },
+  {
+    id: 3,
+    tipo: "aluguel",
+    titulo: "Bonavita Prime",
+    preco: "R$ 3.000",
+    por: "/mês",
+    desc: "Apartamento no prestigiado Bonavita Prime. Espaços amplos, sala arejada, quartos confortáveis e condomínio fechado com lazer padrão resort. Próximo aos principais serviços da região.",
+    diferenciais: ["Piscina Resort", "Quadra Poliesportiva", "Academia Equipada", "Espaço Gourmet", "Portaria Blindada", "Garagem Privativa"],
+    fotos: ["fotos/bonavita_prime/foto1.jpg","fotos/bonavita_prime/foto2.jpg","fotos/bonavita_prime/foto3.jpg","fotos/bonavita_prime/foto4.jpg","fotos/bonavita_prime/foto5.jpg"]
+  },
+  {
+    id: 4,
+    tipo: "aluguel",
+    titulo: "Centro Comercial Arraçagy",
+    preco: "R$ 2.500",
+    por: "/mês",
+    desc: "Ponto comercial estratégico no Centro Comercial Arraçagy. Excelente visibilidade, fácil acesso para clientes, estacionamento frontal e estrutura ideal para escritórios, clínicas e lojas.",
+    diferenciais: ["Ponto Comercial", "Estacionamento Amplo", "Fácil Acesso", "Alta Visibilidade", "Fluxo Constante", "Ideal para Negócios"],
+    fotos: ["fotos/centro_comercial/foto1.jpg","fotos/centro_comercial/foto2.jpg","fotos/centro_comercial/foto3.jpg","fotos/centro_comercial/foto4.jpg","fotos/centro_comercial/foto5.jpg"]
+  },
+  {
+    id: 5,
+    tipo: "aluguel",
+    titulo: "Edifício Munin",
+    preco: "R$ 2.300",
+    por: "/mês",
+    desc: "Apartamento funcional no Edifício Munin. Perfeito equilíbrio entre custo-benefício e localização conveniente. Bairro tranquilo e seguro, próximo a farmácias, supermercados e vias rápidas.",
+    diferenciais: ["Excelente Custo-Benefício", "Ambientes Arejados", "Portaria Segura", "Vaga Marcada", "Bairro Residencial", "Próximo a Serviços"],
+    fotos: ["fotos/munin/foto1.jpg","fotos/munin/foto2.jpg","fotos/munin/foto3.jpg","fotos/munin/foto4.jpg","fotos/munin/foto5.jpg"]
+  },
+  {
+    id: 6,
+    tipo: "aluguel",
+    titulo: "Fit Life",
+    preco: "R$ 3.500",
+    por: "/mês",
+    desc: "More no Fit Life com todo o lazer e bem-estar que sua família merece. Condomínio com parque aquático, academia moderna, quadras, quiosques com churrasqueira e segurança rigorosa.",
+    diferenciais: ["Parque Aquático", "Academia Climatizada", "Churrasqueiras", "Brinquedoteca", "Vigilância 24h", "Varanda Integrada"],
+    fotos: ["fotos/fit_life/foto1.png","fotos/fit_life/foto2.png","fotos/fit_life/foto3.png","fotos/fit_life/foto4.png","fotos/fit_life/foto5.png"]
+  },
+  {
+    id: 7,
+    tipo: "venda",
+    titulo: "Flat Bellagio",
+    preco: "R$ 250.000",
+    por: "",
+    desc: "Excelente opção de Flat no Bellagio para moradia ou investimento em locação (Airbnb/Booking). Imóvel compacto, moderno, com serviços pay-per-use e condomínio enxuto.",
+    diferenciais: ["Ideal para Investimento", "Alta Demanda de Locação", "Recepção / Concierge", "Mobiliável Rápido", "Baixo Condomínio", "Pronto para Escriturar"],
+    fotos: ["fotos/flat_bellagio/foto1.jpg","fotos/flat_bellagio/foto2.jpg","fotos/flat_bellagio/foto3.jpg","fotos/flat_bellagio/foto4.jpg"]
+  },
+  {
+    id: 8,
+    tipo: "venda",
+    titulo: "Studio Design Holandeses",
+    preco: "R$ 475.000",
+    por: "",
+    desc: "Conceito Studio Design na nobre Avenida dos Holandeses. Arquitetura moderna, ambientes integrados, rooftop com vista panorâmica e alto padrão construtivo. O endereço mais valorizado da cidade.",
+    diferenciais: ["Av. dos Holandeses", "Rooftop Panorâmico", "Design Contemporâneo", "Acabamento Premium", "Piscina Borda Infinita", "Alta Liquidez"],
+    fotos: ["fotos/studio_design/foto1.jpg","fotos/studio_design/foto2.jpg","fotos/studio_design/foto3.jpg","fotos/studio_design/foto4.jpg","fotos/studio_design/foto5.jpg"]
+  },
+  {
+    id: 9,
+    tipo: "aluguel",
+    titulo: "Ilha de Havana",
+    preco: "R$ 2.600",
+    por: "/mês",
+    desc: "Apartamento aconchegante no condomínio Ilha de Havana. Imóvel muito bem cuidado, boa ventilação, condomínio organizado e seguro, com área de convivência e lazer para os moradores.",
+    diferenciais: ["Condomínio Organizado", "Lazer com Piscina", "Playground", "Portaria 24 Horas", "Garagem Privativa", "Bairro Estruturado"],
+    fotos: ["fotos/ilha_havana/foto1.jpg","fotos/ilha_havana/foto2.jpg","fotos/ilha_havana/foto3.jpg","fotos/ilha_havana/foto4.jpg","fotos/ilha_havana/foto5.jpg"]
+  },
+  {
+    id: 10,
+    tipo: "aluguel",
+    titulo: "La Quintas Studios",
+    preco: "R$ 3.000",
+    por: "/mês",
+    desc: "Studio sofisticado no La Quintas. Conforto, praticidade e elegância reunidos em um único projeto. Perfeito para executivos, profissionais liberais e pessoas que valorizam estilo.",
+    diferenciais: ["Conceito Studio Sofisticado", "Praticidade Total", "Localização Nobre", "Acabamento Superior", "Área de Convivência", "Segurança Total"],
+    fotos: ["fotos/la_quintas/foto1.jpg","fotos/la_quintas/foto2.jpg","fotos/la_quintas/foto3.jpg","fotos/la_quintas/foto4.jpg","fotos/la_quintas/foto5.jpg"]
+  },
+  {
+    id: 11,
+    tipo: "venda",
+    titulo: "Number One",
+    preco: "R$ 400.000",
+    por: "",
+    desc: "Apartamento no Number One com excelente planta e distribuição de cômodos. Empreendimento consolidado, próximo a shoppings, praias e restaurantes conceituados.",
+    diferenciais: ["Localização Privilegiada", "Suíte Confortável", "Varanda Arejada", "Lazer com Piscina", "Excelente Investimento", "Documentação Ok"],
+    fotos: ["fotos/number_one_400/foto1.png","fotos/number_one_400/foto2.png","fotos/number_one_400/foto3.png","fotos/number_one_400/foto4.png","fotos/number_one_400/foto5.png"]
+  },
+  {
+    id: 12,
+    tipo: "venda",
+    titulo: "Number One – Alto Padrão",
+    preco: "R$ 750.000",
+    por: "",
+    desc: "Unidade exclusiva de alto padrão no Number One. Planta generosa, acabamento premium em todos os detalhes, varanda gourmet imponente, suítes amplas e 2 vagas de garagem privativas.",
+    diferenciais: ["Alto Padrão Construtivo", "2 Vagas de Garagem", "Varanda Gourmet", "Suítes Espaçosas", "Vista Panorâmica", "Condomínio Clube Exclusivo"],
+    fotos: ["fotos/number_one_750/foto1.jpg","fotos/number_one_750/foto2.jpg","fotos/number_one_750/foto3.jpg","fotos/number_one_750/foto4.jpg","fotos/number_one_750/foto5.jpg"]
+  },
+  {
+    id: 13,
+    tipo: "aluguel",
+    titulo: "Porto Madeiro",
+    preco: "R$ 8.500",
+    por: "/mês",
+    desc: "Apartamento de altíssimo luxo no Porto Madeiro. Endereço exclusivo na orla marítima, varanda imensa com vista deslumbrante para o mar, fino acabamento e infraestrutura de resort 5 estrelas.",
+    diferenciais: ["Frente Mar Exclusivo", "Varanda Panorâmica Gigante", "Suítes Master", "Acabamento Nobre", "Segurança Máxima 24h", "Complexo de Lazer VIP"],
+    fotos: ["fotos/porto_madeiro/foto1.jpg","fotos/porto_madeiro/foto2.jpg","fotos/porto_madeiro/foto3.jpg","fotos/porto_madeiro/foto4.jpg","fotos/porto_madeiro/foto5.jpg"]
+  },
+  {
+    id: 14,
+    tipo: "aluguel",
+    titulo: "Solar Ilha III",
+    preco: "R$ 2.200",
+    por: "/mês",
+    desc: "Apartamento aconchegante e seguro no condomínio Solar da Ilha III. Ótima opção para famílias que buscam tranquilidade, lazer com piscina e fácil acesso ao transporte e comércio.",
+    diferenciais: ["Condomínio Tranquilo", "Piscina e Churrasqueira", "Vaga de Garagem", "Portaria com Controle de Acesso", "Baixo Custo Mensal", "Pronto p/ Morar"],
+    fotos: ["fotos/solar_ilha/foto1.jpg","fotos/solar_ilha/foto2.jpg","fotos/solar_ilha/foto3.jpg","fotos/solar_ilha/foto4.jpg","fotos/solar_ilha/foto5.jpg"]
+  }
 ];
 
-const state = imoveis.map(() => 0);
+const cardSlideState = imoveis.map(() => 0);
+let currentFichaImovel = null;
+let currentFichaPhotoIndex = 0;
 let currentShareImovel = null;
 
-function move(idx, dir) {
+function moveCardSlide(idx, dir, e) {
+  if (e) e.stopPropagation();
   const total = imoveis[idx].fotos.length;
-  state[idx] = (state[idx] + dir + total) % total;
-  goTo(idx, state[idx]);
+  cardSlideState[idx] = (cardSlideState[idx] + dir + total) % total;
+  goToCardSlide(idx, cardSlideState[idx]);
 }
 
-function goTo(idx, pos) {
-  state[idx] = pos;
+function goToCardSlide(idx, pos, e) {
+  if (e) e.stopPropagation();
+  cardSlideState[idx] = pos;
   const slides = document.getElementById('slides-' + idx);
   if (slides) slides.style.transform = `translateX(-${pos * 100}%)`;
   const dotsEl = document.getElementById('dots-' + idx);
@@ -667,38 +1044,40 @@ function buildCard(im, idx) {
   const badgeLabel = im.tipo === 'venda' ? 'Venda' : 'Aluguel';
   const msg = encodeURIComponent(`Olá! Tenho interesse no imóvel: ${im.titulo} – ${im.preco}${im.por}`);
   const slides = im.fotos.map(f => `<div class="gallery-slide"><img src="${f}" alt="${im.titulo}" loading="lazy" /></div>`).join('');
-  const dots = im.fotos.map((_, i) => `<span class="dot ${i===0?'active':''}" onclick="goTo(${idx},${i})"></span>`).join('');
+  const dots = im.fotos.map((_, i) => `<span class="dot ${i===0?'active':''}" onclick="goToCardSlide(${idx},${i},event)"></span>`).join('');
   
   return `
-  <div class="card" id="imovel-${im.id}" data-tipo="${im.tipo}">
+  <div class="card" id="imovel-${im.id}" data-tipo="${im.tipo}" onclick="abrirFicha(${idx})">
     <div class="gallery">
       <span class="card-badge ${badgeClass}">${badgeLabel}</span>
+      <span class="card-tag-zoom">Ver Fotos</span>
       <div class="gallery-slides" id="slides-${idx}">${slides}</div>
       ${im.fotos.length > 1 ? `
-      <button class="gallery-btn prev" onclick="move(${idx},-1)" aria-label="Foto anterior">&#8249;</button>
-      <button class="gallery-btn next" onclick="move(${idx},1)" aria-label="Próxima foto">&#8250;</button>
+      <button class="gallery-btn prev" onclick="moveCardSlide(${idx},-1,event)" aria-label="Foto anterior">&#8249;</button>
+      <button class="gallery-btn next" onclick="moveCardSlide(${idx},1,event)" aria-label="Próxima foto">&#8250;</button>
       <div class="gallery-dots" id="dots-${idx}">${dots}</div>` : ''}
     </div>
     <div class="card-body">
       <div class="card-price">${im.preco}<span>${im.por}</span></div>
       <div class="card-title">${im.titulo}</div>
+      <div class="card-desc-preview">${im.desc}</div>
       <div class="card-features">
-        <span class="feat">${im.tipo === 'venda' ? 'Disponível p/ Venda' : 'Disponível p/ Locação'}</span>
+        <span class="feat">${im.tipo === 'venda' ? 'Venda' : 'Locação'}</span>
         <span class="feat">${im.fotos.length} Fotos</span>
+        <span class="feat">Ficha Completa</span>
       </div>
     </div>
-    <div class="card-footer">
+    <div class="card-footer" onclick="event.stopPropagation()">
+      <button class="btn-detalhes" onclick="abrirFicha(${idx})">
+        Ver Ficha
+      </button>
       <a class="btn-contato" href="${WA}?text=${msg}" target="_blank">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Tenho Interesse
+        WhatsApp
       </a>
       <button class="btn-share" onclick="abrirCompartilhar(${idx})" title="Compartilhar imóvel ou copiar link">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="18" cy="5" r="3"></circle>
-          <circle cx="6" cy="12" r="3"></circle>
-          <circle cx="18" cy="19" r="3"></circle>
-          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
         </svg>
       </button>
     </div>
@@ -717,6 +1096,85 @@ function renderCards(lista) {
   document.getElementById('results-count').textContent = lista.length + (lista.length === 1 ? ' imóvel encontrado' : ' imóveis encontrados');
   if (lista.length === 0) { grid.innerHTML = '<div class="empty">Nenhum imóvel encontrado.</div>'; return; }
   grid.innerHTML = lista.map(im => buildCard(im, imoveis.indexOf(im))).join('');
+}
+
+// ── FICHA COMPLETA DO IMÓVEL (EXPANDIDO) ──
+function abrirFicha(idx) {
+  const im = imoveis[idx];
+  currentFichaImovel = im;
+  currentFichaPhotoIndex = 0;
+
+  document.getElementById('fichaTitulo').textContent = im.titulo;
+  const badgeEl = document.getElementById('fichaBadge');
+  badgeEl.textContent = im.tipo === 'venda' ? 'Disponível p/ Venda' : 'Disponível p/ Aluguel';
+  badgeEl.className = 'ficha-header-badge ' + (im.tipo === 'venda' ? 'venda' : 'aluguel');
+
+  document.getElementById('fichaPreco').innerHTML = `${im.preco}<span>${im.por}</span>`;
+  document.getElementById('fichaDesc').textContent = im.desc;
+
+  // Features
+  const featContainer = document.getElementById('fichaFeatures');
+  featContainer.innerHTML = im.diferenciais.map(d => `
+    <div class="ficha-feat-item">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      ${d}
+    </div>
+  `).join('');
+
+  // Thumbnails
+  const thumbsContainer = document.getElementById('fichaThumbs');
+  thumbsContainer.innerHTML = im.fotos.map((f, i) => `
+    <div class="ficha-thumb ${i===0?'active':''}" onclick="setFichaPhoto(${i})">
+      <img src="${f}" alt="Miniatura ${i+1}" />
+    </div>
+  `).join('');
+
+  // Update Main Photo
+  updateFichaPhoto();
+
+  // WhatsApp Link
+  const msg = encodeURIComponent(`Olá! Gostei muito da ficha do imóvel: ${im.titulo} (${im.preco}${im.por}). Gostaria de agendar uma visita e tirar algumas dúvidas.`);
+  document.getElementById('fichaBtnWa').href = `${WA}?text=${msg}`;
+
+  document.getElementById('fichaOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function updateFichaPhoto() {
+  const im = currentFichaImovel;
+  if (!im) return;
+  document.getElementById('fichaMainImg').src = im.fotos[currentFichaPhotoIndex];
+  document.getElementById('fichaCounter').textContent = `${currentFichaPhotoIndex + 1} / ${im.fotos.length}`;
+
+  const thumbs = document.querySelectorAll('.ficha-thumb');
+  thumbs.forEach((t, i) => t.classList.toggle('active', i === currentFichaPhotoIndex));
+}
+
+function moveFicha(dir) {
+  if (!currentFichaImovel) return;
+  const total = currentFichaImovel.fotos.length;
+  currentFichaPhotoIndex = (currentFichaPhotoIndex + dir + total) % total;
+  updateFichaPhoto();
+}
+
+function setFichaPhoto(index) {
+  currentFichaPhotoIndex = index;
+  updateFichaPhoto();
+}
+
+function fecharFicha() {
+  document.getElementById('fichaOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function fecharFichaFora(e) {
+  if (e.target.id === 'fichaOverlay') fecharFicha();
+}
+
+function abrirCompartilharDeFicha() {
+  if (!currentFichaImovel) return;
+  const idx = imoveis.indexOf(currentFichaImovel);
+  abrirCompartilhar(idx);
 }
 
 // ── COMPARTILHAMENTO ──
@@ -788,6 +1246,7 @@ function copiarLinkModal() {
   });
 }
 
+// ── CHECAGEM DE HASH NA URL AO CARREGAR ──
 function checkHash() {
   if (window.location.hash) {
     const el = document.querySelector(window.location.hash);
@@ -800,6 +1259,16 @@ function checkHash() {
     }
   }
 }
+
+// Teclado para navegar galeria da ficha
+window.addEventListener('keydown', (e) => {
+  const overlay = document.getElementById('fichaOverlay');
+  if (overlay && overlay.classList.contains('active')) {
+    if (e.key === 'Escape') fecharFicha();
+    if (e.key === 'ArrowLeft') moveFicha(-1);
+    if (e.key === 'ArrowRight') moveFicha(1);
+  }
+});
 
 renderCards(imoveis);
 window.addEventListener('load', checkHash);

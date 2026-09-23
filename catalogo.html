@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>G A Imóveis – Catálogo</title>
+  <title>G A Imóveis – Catálogo Oficial</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,6 +28,7 @@
       --radius-sm: 8px;
     }
 
+    html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
     /* ── HEADER ── */
@@ -43,7 +44,7 @@
       display: flex; align-items: center; justify-content: space-between;
       height: 72px;
     }
-    .logo { display: flex; align-items: center; gap: .85rem; }
+    .logo { display: flex; align-items: center; gap: .85rem; text-decoration: none; }
     .logo img {
       height: 52px;
       width: auto;
@@ -83,7 +84,7 @@
     .hero-banner-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to right, rgba(26,60,94,.65) 0%, rgba(26,60,94,.1) 60%, transparent 100%);
+      background: linear-gradient(to right, rgba(26,60,94,.72) 0%, rgba(26,60,94,.2) 60%, transparent 100%);
       display: flex;
       align-items: center;
       padding: 3rem;
@@ -99,26 +100,26 @@
     .hero-banner-text h1 span { color: var(--accent); }
     .hero-banner-text p {
       font-size: 1rem;
-      color: rgba(255,255,255,.88);
+      color: rgba(255,255,255,.9);
       text-shadow: 0 1px 4px rgba(0,0,0,.3);
-      max-width: 380px;
+      max-width: 420px;
       margin-bottom: 1.4rem;
     }
     .hero-stats {
       display: flex;
-      gap: 1.5rem;
+      gap: 1.2rem;
       flex-wrap: wrap;
     }
     .stat {
       text-align: center;
-      background: rgba(255,255,255,.12);
-      backdrop-filter: blur(4px);
+      background: rgba(255,255,255,.15);
+      backdrop-filter: blur(6px);
       border-radius: 10px;
-      padding: .6rem 1rem;
-      min-width: 70px;
+      padding: .6rem 1.1rem;
+      min-width: 80px;
     }
     .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--accent); line-height: 1; }
-    .stat-label { font-size: .68rem; color: rgba(255,255,255,.75); text-transform: uppercase; letter-spacing: 1px; margin-top: .2rem; }
+    .stat-label { font-size: .68rem; color: rgba(255,255,255,.8); text-transform: uppercase; letter-spacing: 1px; margin-top: .2rem; }
 
     /* ── FILTROS ── */
     .filters-bar {
@@ -152,10 +153,23 @@
     /* ── CARD ── */
     .card {
       background: var(--white); border-radius: var(--radius); overflow: hidden;
-      box-shadow: var(--shadow-sm); transition: transform .25s, box-shadow .25s;
+      box-shadow: var(--shadow-sm); transition: transform .25s, box-shadow .25s, border-color .3s;
       display: flex; flex-direction: column;
+      border: 2px solid transparent;
+      scroll-margin-top: 150px;
     }
     .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .card.destacado {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.25), var(--shadow-lg);
+      animation: pulseHighlight 2s ease-in-out;
+    }
+
+    @keyframes pulseHighlight {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
 
     .gallery { position: relative; height: 220px; overflow: hidden; background: var(--gray-200); }
     .gallery-slides { display: flex; height: 100%; transition: transform .35s ease; }
@@ -168,7 +182,7 @@
       display: flex; align-items: center; justify-content: center; z-index: 5;
       transition: background .2s;
     }
-    .gallery-btn:hover { background: rgba(0,0,0,.7); }
+    .gallery-btn:hover { background: rgba(0,0,0,.75); }
     .gallery-btn.prev { left: 8px; }
     .gallery-btn.next { right: 8px; }
     .gallery-dots { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 5; }
@@ -192,15 +206,44 @@
       font-size: .76rem; font-weight: 500; color: var(--gray-800);
       padding: .22rem .55rem; display: flex; align-items: center; gap: .25rem;
     }
-    .card-footer { padding: 0 1.2rem 1.2rem; }
+
+    /* ── CARD FOOTER & AÇÕES ── */
+    .card-footer {
+      padding: 0 1.2rem 1.2rem;
+      display: flex;
+      gap: .5rem;
+      align-items: center;
+    }
     .btn-contato {
+      flex: 1;
       display: flex; align-items: center; justify-content: center; gap: .45rem;
-      width: 100%; background: #25D366; color: #fff;
+      background: #25D366; color: #fff;
       font-family: inherit; font-size: .88rem; font-weight: 700;
       padding: .72rem; border-radius: var(--radius-sm); border: none;
-      cursor: pointer; text-decoration: none; transition: background .2s;
+      cursor: pointer; text-decoration: none; transition: background .2s, transform .1s;
     }
-    .btn-contato:hover { background: #1ebe5d; }
+    .btn-contato:hover { background: #1ebe5d; transform: translateY(-1px); }
+
+    .btn-share {
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      color: var(--primary);
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all .2s;
+      flex-shrink: 0;
+    }
+    .btn-share:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
 
     /* ── RODAPÉ ATENDIMENTO ── */
     .contact-section {
@@ -226,15 +269,15 @@
       line-height: 1.2;
     }
     .contact-text h2 span { color: var(--accent); }
-    .contact-text p { color: rgba(255,255,255,.75); margin-bottom: 2rem; font-size: 1rem; line-height: 1.6; }
+    .contact-text p { color: rgba(255,255,255,.8); margin-bottom: 2rem; font-size: 1rem; line-height: 1.6; }
     .contact-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
     .btn-wa-big {
       background: #25D366; color: #fff; font-weight: 700; font-size: 1rem;
       padding: .85rem 2rem; border-radius: 50px; text-decoration: none;
-      display: inline-flex; align-items: center; gap: .5rem; transition: background .2s;
+      display: inline-flex; align-items: center; gap: .5rem; transition: background .2s, transform .1s;
       box-shadow: 0 4px 16px rgba(37,211,102,.35);
     }
-    .btn-wa-big:hover { background: #1ebe5d; }
+    .btn-wa-big:hover { background: #1ebe5d; transform: translateY(-1px); }
     .contact-atendente {
       flex-shrink: 0;
       width: 280px;
@@ -250,13 +293,89 @@
     /* ── FOOTER ── */
     footer {
       background: #07192e;
-      color: rgba(255,255,255,.4);
+      color: rgba(255,255,255,.45);
       text-align: center;
       padding: 1.25rem;
       font-size: .78rem;
     }
 
     .empty { grid-column: 1/-1; text-align: center; padding: 4rem 2rem; color: var(--gray-400); font-size: 1.05rem; }
+
+    /* ── MODAL COMPARTILHAR ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(10, 25, 45, 0.65);
+      backdrop-filter: blur(5px);
+      z-index: 200;
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s ease;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .modal-box {
+      background: var(--white);
+      border-radius: var(--radius);
+      max-width: 440px; width: 100%;
+      padding: 1.75rem;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(20px);
+      transition: transform .25s ease;
+      position: relative;
+    }
+    .modal-overlay.active .modal-box { transform: translateY(0); }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.2rem;
+    }
+    .modal-title { font-size: 1.15rem; font-weight: 700; color: var(--primary); }
+    .modal-close {
+      background: none; border: none; font-size: 1.4rem; color: var(--gray-600);
+      cursor: pointer; width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .modal-close:hover { background: var(--gray-100); color: var(--text); }
+    .modal-imovel-info {
+      background: var(--gray-100);
+      padding: .85rem 1rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 1.25rem;
+      display: flex;
+      gap: .8rem;
+      align-items: center;
+    }
+    .modal-imovel-img {
+      width: 54px; height: 54px; border-radius: 6px; object-fit: cover; flex-shrink: 0;
+    }
+    .modal-imovel-details { font-size: .85rem; }
+    .modal-imovel-name { font-weight: 700; color: var(--gray-800); }
+    .modal-imovel-price { color: var(--primary); font-weight: 800; font-size: .95rem; margin-top: .15rem; }
+
+    .modal-actions { display: flex; flex-direction: column; gap: .75rem; }
+    .modal-btn {
+      display: flex; align-items: center; justify-content: center; gap: .6rem;
+      padding: .8rem 1rem; border-radius: var(--radius-sm); font-size: .9rem;
+      font-weight: 700; text-decoration: none; cursor: pointer; border: none;
+      transition: all .2s;
+    }
+    .modal-btn-wa { background: #25D366; color: #fff; }
+    .modal-btn-wa:hover { background: #1ebe5d; }
+    .modal-btn-copy { background: var(--primary); color: #fff; }
+    .modal-btn-copy:hover { background: var(--primary-light); }
+
+    /* ── TOAST NOTIFICAÇÃO ── */
+    .toast {
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: #1a202c; color: #fff; padding: .75rem 1.4rem;
+      border-radius: 50px; font-size: .88rem; font-weight: 600;
+      box-shadow: var(--shadow-lg); z-index: 300; display: flex; align-items: center; gap: .5rem;
+      opacity: 0; pointer-events: none; transition: transform .3s ease, opacity .3s ease;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
 
     @media (max-width: 768px) {
       .hero-banner { max-height: 320px; }
@@ -280,13 +399,13 @@
 <!-- HEADER com LOGO -->
 <header>
   <div class="header-inner">
-    <div class="logo">
+    <a class="logo" href="#">
       <img src="logo.jpg" alt="G A Imóveis" />
       <div class="logo-text">
         <div class="brand">G A Imóveis</div>
         <div class="tagline">Seu imóvel ideal</div>
       </div>
-    </div>
+    </a>
     <a class="btn-wa-header" href="https://wa.me/message/2R2A4LNEO6W2N1" target="_blank">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       WhatsApp
@@ -348,27 +467,61 @@
 
 <footer>© 2026 G A Imóveis · Todos os direitos reservados · Atualizado em setembro/2026</footer>
 
+<!-- MODAL DE COMPARTILHAMENTO -->
+<div class="modal-overlay" id="modalShare" onclick="fecharModalFora(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">Compartilhar Imóvel</div>
+      <button class="modal-close" onclick="fecharModal()" title="Fechar">&times;</button>
+    </div>
+    <div class="modal-imovel-info">
+      <img id="modalImg" class="modal-imovel-img" src="" alt="Foto Imóvel" />
+      <div class="modal-imovel-details">
+        <div id="modalTitulo" class="modal-imovel-name"></div>
+        <div id="modalPreco" class="modal-imovel-price"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <a id="btnShareWhatsApp" class="modal-btn modal-btn-wa" href="#" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Enviar no WhatsApp
+      </a>
+      <button class="modal-btn modal-btn-copy" onclick="copiarLinkModal()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        Copiar Link Direto
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  <span id="toastMsg">Link copiado com sucesso!</span>
+</div>
+
 <script>
 const WA = "https://wa.me/message/2R2A4LNEO6W2N1";
 
 const imoveis = [
-  { tipo:"aluguel", titulo:"Biarritiz",                       preco:"R$ 3.300", por:"/mês",  fotos:["fotos/biarritiz_aluguel/foto1.jpg","fotos/biarritiz_aluguel/foto2.jpg","fotos/biarritiz_aluguel/foto3.jpg","fotos/biarritiz_aluguel/foto4.jpg","fotos/biarritiz_aluguel/foto5.jpg"] },
-  { tipo:"venda",  titulo:"Biarritiz",                        preco:"R$ 400.000", por:"",   fotos:["fotos/biarritiz_venda/foto1.jpg","fotos/biarritiz_venda/foto2.jpg","fotos/biarritiz_venda/foto3.jpg","fotos/biarritiz_venda/foto4.jpg","fotos/biarritiz_venda/foto5.jpg"] },
-  { tipo:"aluguel", titulo:"Bonavita Prime",                  preco:"R$ 3.000", por:"/mês",  fotos:["fotos/bonavita_prime/foto1.jpg","fotos/bonavita_prime/foto2.jpg","fotos/bonavita_prime/foto3.jpg","fotos/bonavita_prime/foto4.jpg","fotos/bonavita_prime/foto5.jpg"] },
-  { tipo:"aluguel", titulo:"Centro Comercial Arraçagy",       preco:"R$ 2.500", por:"/mês",  fotos:["fotos/centro_comercial/foto1.jpg","fotos/centro_comercial/foto2.jpg","fotos/centro_comercial/foto3.jpg","fotos/centro_comercial/foto4.jpg","fotos/centro_comercial/foto5.jpg"] },
-  { tipo:"aluguel", titulo:"Edifício Munin",                  preco:"R$ 2.300", por:"/mês",  fotos:["fotos/munin/foto1.jpg","fotos/munin/foto2.jpg","fotos/munin/foto3.jpg","fotos/munin/foto4.jpg","fotos/munin/foto5.jpg"] },
-  { tipo:"aluguel", titulo:"Fit Life",                        preco:"R$ 3.500", por:"/mês",  fotos:["fotos/fit_life/foto1.jpg","fotos/fit_life/foto2.jpg","fotos/fit_life/foto3.jpg","fotos/fit_life/foto4.jpg","fotos/fit_life/foto5.jpg"] },
-  { tipo:"venda",  titulo:"Flat Bellagio",                    preco:"R$ 250.000", por:"",   fotos:["fotos/flat_bellagio/foto1.jpg","fotos/flat_bellagio/foto2.jpg","fotos/flat_bellagio/foto3.jpg","fotos/flat_bellagio/foto4.jpg"] },
-  { tipo:"venda",  titulo:"Studio Design Holandeses",         preco:"R$ 475.000", por:"",   fotos:["fotos/studio_design/foto1.jpg","fotos/studio_design/foto2.jpg","fotos/studio_design/foto3.jpg","fotos/studio_design/foto4.jpg","fotos/studio_design/foto5.jpg"] },
-  { tipo:"aluguel", titulo:"Ilha de Havana",                  preco:"R$ 2.600", por:"/mês",  fotos:["fotos/ilha_havana/foto1.jpg","fotos/ilha_havana/foto2.jpg","fotos/ilha_havana/foto3.jpg","fotos/ilha_havana/foto4.jpg","fotos/ilha_havana/foto5.jpg"] },
-  { tipo:"aluguel", titulo:"La Quintas Studios",              preco:"R$ 3.000", por:"/mês",  fotos:["fotos/la_quintas/foto1.jpg","fotos/la_quintas/foto2.jpg","fotos/la_quintas/foto3.jpg","fotos/la_quintas/foto4.jpg","fotos/la_quintas/foto5.jpg"] },
-  { tipo:"venda",  titulo:"Number One",                       preco:"R$ 400.000", por:"",   fotos:["fotos/number_one_400/foto1.jpg","fotos/number_one_400/foto2.jpg","fotos/number_one_400/foto3.jpg","fotos/number_one_400/foto4.jpg","fotos/number_one_400/foto5.jpg"] },
-  { tipo:"venda",  titulo:"Number One – Alto Padrão",         preco:"R$ 750.000", por:"",   fotos:["fotos/number_one_750/foto1.jpg","fotos/number_one_750/foto2.jpg","fotos/number_one_750/foto3.jpg","fotos/number_one_750/foto4.jpg","fotos/number_one_750/foto5.jpg"] },
-  { tipo:"aluguel", titulo:"Porto Madeiro",                   preco:"R$ 8.500", por:"/mês",  fotos:["fotos/porto_madeiro/foto1.jpg","fotos/porto_madeiro/foto2.jpg","fotos/porto_madeiro/foto3.jpg","fotos/porto_madeiro/foto4.jpg","fotos/porto_madeiro/foto5.jpg"] },
-  { tipo:"aluguel", titulo:"Solar Ilha III",                  preco:"R$ 2.200", por:"/mês",  fotos:["fotos/solar_ilha/foto1.jpg","fotos/solar_ilha/foto2.jpg","fotos/solar_ilha/foto3.jpg","fotos/solar_ilha/foto4.jpg","fotos/solar_ilha/foto5.jpg"] }
+  { id: 1,  tipo:"aluguel", titulo:"Biarritiz",                       preco:"R$ 3.300", por:"/mês",  fotos:["fotos/biarritiz_aluguel/foto1.jpg","fotos/biarritiz_aluguel/foto2.jpg","fotos/biarritiz_aluguel/foto3.jpg","fotos/biarritiz_aluguel/foto4.jpg","fotos/biarritiz_aluguel/foto5.jpg"] },
+  { id: 2,  tipo:"venda",  titulo:"Biarritiz",                        preco:"R$ 400.000", por:"",   fotos:["fotos/biarritiz_venda/foto1.jpg","fotos/biarritiz_venda/foto2.jpg","fotos/biarritiz_venda/foto3.jpg","fotos/biarritiz_venda/foto4.jpg","fotos/biarritiz_venda/foto5.jpg"] },
+  { id: 3,  tipo:"aluguel", titulo:"Bonavita Prime",                  preco:"R$ 3.000", por:"/mês",  fotos:["fotos/bonavita_prime/foto1.jpg","fotos/bonavita_prime/foto2.jpg","fotos/bonavita_prime/foto3.jpg","fotos/bonavita_prime/foto4.jpg","fotos/bonavita_prime/foto5.jpg"] },
+  { id: 4,  tipo:"aluguel", titulo:"Centro Comercial Arraçagy",       preco:"R$ 2.500", por:"/mês",  fotos:["fotos/centro_comercial/foto1.jpg","fotos/centro_comercial/foto2.jpg","fotos/centro_comercial/foto3.jpg","fotos/centro_comercial/foto4.jpg","fotos/centro_comercial/foto5.jpg"] },
+  { id: 5,  tipo:"aluguel", titulo:"Edifício Munin",                  preco:"R$ 2.300", por:"/mês",  fotos:["fotos/munin/foto1.jpg","fotos/munin/foto2.jpg","fotos/munin/foto3.jpg","fotos/munin/foto4.jpg","fotos/munin/foto5.jpg"] },
+  { id: 6,  tipo:"aluguel", titulo:"Fit Life",                        preco:"R$ 3.500", por:"/mês",  fotos:["fotos/fit_life/foto1.jpg","fotos/fit_life/foto2.jpg","fotos/fit_life/foto3.jpg","fotos/fit_life/foto4.jpg","fotos/fit_life/foto5.jpg"] },
+  { id: 7,  tipo:"venda",  titulo:"Flat Bellagio",                    preco:"R$ 250.000", por:"",   fotos:["fotos/flat_bellagio/foto1.jpg","fotos/flat_bellagio/foto2.jpg","fotos/flat_bellagio/foto3.jpg","fotos/flat_bellagio/foto4.jpg"] },
+  { id: 8,  tipo:"venda",  titulo:"Studio Design Holandeses",         preco:"R$ 475.000", por:"",   fotos:["fotos/studio_design/foto1.jpg","fotos/studio_design/foto2.jpg","fotos/studio_design/foto3.jpg","fotos/studio_design/foto4.jpg","fotos/studio_design/foto5.jpg"] },
+  { id: 9,  tipo:"aluguel", titulo:"Ilha de Havana",                  preco:"R$ 2.600", por:"/mês",  fotos:["fotos/ilha_havana/foto1.jpg","fotos/ilha_havana/foto2.jpg","fotos/ilha_havana/foto3.jpg","fotos/ilha_havana/foto4.jpg","fotos/ilha_havana/foto5.jpg"] },
+  { id: 10, tipo:"aluguel", titulo:"La Quintas Studios",              preco:"R$ 3.000", por:"/mês",  fotos:["fotos/la_quintas/foto1.jpg","fotos/la_quintas/foto2.jpg","fotos/la_quintas/foto3.jpg","fotos/la_quintas/foto4.jpg","fotos/la_quintas/foto5.jpg"] },
+  { id: 11, tipo:"venda",  titulo:"Number One",                       preco:"R$ 400.000", por:"",   fotos:["fotos/number_one_400/foto1.jpg","fotos/number_one_400/foto2.jpg","fotos/number_one_400/foto3.jpg","fotos/number_one_400/foto4.jpg","fotos/number_one_400/foto5.jpg"] },
+  { id: 12, tipo:"venda",  titulo:"Number One – Alto Padrão",         preco:"R$ 750.000", por:"",   fotos:["fotos/number_one_750/foto1.jpg","fotos/number_one_750/foto2.jpg","fotos/number_one_750/foto3.jpg","fotos/number_one_750/foto4.jpg","fotos/number_one_750/foto5.jpg"] },
+  { id: 13, tipo:"aluguel", titulo:"Porto Madeiro",                   preco:"R$ 8.500", por:"/mês",  fotos:["fotos/porto_madeiro/foto1.jpg","fotos/porto_madeiro/foto2.jpg","fotos/porto_madeiro/foto3.jpg","fotos/porto_madeiro/foto4.jpg","fotos/porto_madeiro/foto5.jpg"] },
+  { id: 14, tipo:"aluguel", titulo:"Solar Ilha III",                  preco:"R$ 2.200", por:"/mês",  fotos:["fotos/solar_ilha/foto1.jpg","fotos/solar_ilha/foto2.jpg","fotos/solar_ilha/foto3.jpg","fotos/solar_ilha/foto4.jpg","fotos/solar_ilha/foto5.jpg"] }
 ];
 
 const state = imoveis.map(() => 0);
+let currentShareImovel = null;
 
 function move(idx, dir) {
   const total = imoveis[idx].fotos.length;
@@ -390,8 +543,9 @@ function buildCard(im, idx) {
   const msg = encodeURIComponent(`Olá! Tenho interesse no imóvel: ${im.titulo} – ${im.preco}${im.por}`);
   const slides = im.fotos.map(f => `<div class="gallery-slide"><img src="${f}" alt="${im.titulo}" loading="lazy" /></div>`).join('');
   const dots = im.fotos.map((_, i) => `<span class="dot ${i===0?'active':''}" onclick="goTo(${idx},${i})"></span>`).join('');
+  
   return `
-  <div class="card" data-tipo="${im.tipo}">
+  <div class="card" id="imovel-${im.id}" data-tipo="${im.tipo}">
     <div class="gallery">
       <span class="card-badge ${badgeClass}">${badgeLabel}</span>
       <div class="gallery-slides" id="slides-${idx}">${slides}</div>
@@ -413,6 +567,15 @@ function buildCard(im, idx) {
         <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Tenho Interesse
       </a>
+      <button class="btn-share" onclick="abrirCompartilhar(${idx})" title="Compartilhar imóvel ou copiar link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="18" cy="5" r="3"></circle>
+          <circle cx="6" cy="12" r="3"></circle>
+          <circle cx="18" cy="19" r="3"></circle>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+        </svg>
+      </button>
     </div>
   </div>`;
 }
@@ -431,7 +594,95 @@ function renderCards(lista) {
   grid.innerHTML = lista.map(im => buildCard(im, imoveis.indexOf(im))).join('');
 }
 
+// ── COMPARTILHAMENTO ──
+function getImovelUrl(id) {
+  const base = window.location.origin + window.location.pathname;
+  return `${base}#imovel-${id}`;
+}
+
+function abrirCompartilhar(idx) {
+  const im = imoveis[idx];
+  currentShareImovel = im;
+  const link = getImovelUrl(im.id);
+  const textoShare = `Confira este imóvel da G A Imóveis:\n🏢 *${im.titulo}*\n💰 *${im.preco}${im.por}*\n👉 Acesse as fotos e detalhes: ${link}`;
+
+  // Se tiver suporte a navigator.share nativo (celular), tenta usar primeiro
+  if (navigator.share) {
+    navigator.share({
+      title: `${im.titulo} – G A Imóveis`,
+      text: textoShare,
+      url: link
+    }).catch(() => {
+      abrirModal(im, link, textoShare);
+    });
+  } else {
+    abrirModal(im, link, textoShare);
+  }
+}
+
+function abrirModal(im, link, textoShare) {
+  document.getElementById('modalImg').src = im.fotos[0];
+  document.getElementById('modalTitulo').textContent = im.titulo;
+  document.getElementById('modalPreco').textContent = `${im.preco}${im.por}`;
+  
+  const waShareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textoShare)}`;
+  document.getElementById('btnShareWhatsApp').href = waShareUrl;
+
+  document.getElementById('modalShare').classList.add('active');
+}
+
+function fecharModal() {
+  document.getElementById('modalShare').classList.remove('active');
+}
+
+function fecharModalFora(e) {
+  if (e.target.id === 'modalShare') fecharModal();
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function copiarLinkModal() {
+  if (!currentShareImovel) return;
+  const link = getImovelUrl(currentShareImovel.id);
+  navigator.clipboard.writeText(link).then(() => {
+    fecharModal();
+    showToast('Link do imóvel copiado com sucesso!');
+  }).catch(() => {
+    // Fallback
+    const input = document.createElement('input');
+    input.value = link;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+    fecharModal();
+    showToast('Link do imóvel copiado com sucesso!');
+  });
+}
+
+// ── CHECAGEM DE HASH NA URL AO CARREGAR ──
+function checkHash() {
+  if (window.location.hash) {
+    const el = document.querySelector(window.location.hash);
+    if (el) {
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('destacado');
+        setTimeout(() => el.classList.remove('destacado'), 3500);
+      }, 300);
+    }
+  }
+}
+
+// Inicialização
 renderCards(imoveis);
+window.addEventListener('load', checkHash);
+window.addEventListener('hashchange', checkHash);
 </script>
 </body>
 </html>
